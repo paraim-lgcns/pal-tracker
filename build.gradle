@@ -29,11 +29,9 @@ dependencies {
 }
 
 bootRun.environment([
-        "WELCOME_MESSAGE": "hello gradle",
-        "PORT":"test port:8080",
-        "MEMORY_LIMIT":"test memory limit",
+        "WELCOME_MESSAGE": "hello"
 ])
 
 test.environment([
-        "WELCOME_MESSAGE": "Hello from test",
+        "WELCOME_MESSAGE": "Hello from test"
 ])
