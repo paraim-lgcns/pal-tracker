@@ -1,5 +1,8 @@
 package io.pivotal.pal.tracker;
 
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.DistributionSummary;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
@@ -11,11 +14,23 @@ import java.util.List;
 @RestController
 @RequestMapping("/time-entries")
 public class TimeEntryController {
-    public TimeEntryController(TimeEntryRepository timeEntryRepository) {
-        this.timeEntryRepository=timeEntryRepository;
-    }
-
     private TimeEntryRepository timeEntryRepository;
+    private final DistributionSummary timeEntrySummary;
+    private final Counter actionCounter;
+
+    public TimeEntryController(
+            TimeEntryRepository timeEntriesRepo,
+            MeterRegistry meterRegistry
+    ) {
+        this.timeEntryRepository = timeEntriesRepo;
+        this.timeEntrySummary = meterRegistry.summary("timeEntry.summary");
+        this.actionCounter = meterRegistry.counter("timeEntry.actionCounter");
+    }
+//
+//    public TimeEntryController(TimeEntryRepository timeEntryRepository) {
+//        this.timeEntryRepository=timeEntryRepository;
+//    }
+
 
     @PostMapping
     public ResponseEntity create(@RequestBody TimeEntry timeEntryToCreate) {

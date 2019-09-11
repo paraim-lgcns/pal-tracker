@@ -21,7 +21,8 @@ public class PalTrackerApplication {
 
     @Bean
     public TimeEntryRepository timeEntryRepository(DataSource dataSource){
-        // dd
+        // 아래와 같은 방식으로 datasource 삽입 시 pcf의 env에 선언된 database 에는 SPRING_DATASOURCE_URL 변수가 없어서 찾을 수가 없음
+        //그래서 위와 같이 변수로 받아오도록 선언하면 스프링이 알아서 찾아서 온다고 함!!!! awesome~!!!!
         //MysqlDataSource dataSource = new MysqlDataSource();
         //dataSource.setUrl(System.getenv("SPRING_DATASOURCE_URL"));
         return new JdbcTimeEntryRepository(dataSource);
